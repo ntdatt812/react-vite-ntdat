@@ -1,5 +1,6 @@
 
-const TodoNew = () => {
+const TodoNew = ({ addNewTodo }) => {
+    addNewTodo("Thanh Dat")
     return (
         <div className='todo-new'>
             <input type="text" />
