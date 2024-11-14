@@ -1,7 +1,11 @@
+import './style.css';
 
 const MyComponent = () => {
     return (
-        <div>Đây là component đầu tiên! By Nguyễn Thành Đạt</div>
+        <>
+            <div style={{ borderRadius: "10px" }}>Đây là component đầu tiên! By Nguyễn Thành Đạt</div>
+            <div className="child">child</div>
+        </>
     );
 }
 
