@@ -28,21 +28,31 @@ const App = () => {
     setTodoData([...todoData, newTodo])
   }
 
+  const deleteTodo = (id) => {
+    console.log(">> check id: ", id)
+    const result = todoData.filter((todo) => todo.id !== id)
+    setTodoData(result)
+  }
+
   return (
     <div className="todo-container">
       <div className="todo-title">TODO LIST</div>
       <TodoNew
         addNewTodo={addNewTodo}
       />
-      <TodoData
-        name={ntdat}
-        age={age}
-        data={data}
-        todoData={todoData}
-      />
-      <div className='todo-image'>
-        <img className='logo' src={reactLogo} />
-      </div>
+      {todoData.length !== 0 ?
+        <TodoData
+          name={ntdat}
+          age={age}
+          data={data}
+          todoData={todoData}
+          deleteTodo={deleteTodo}
+        />
+        :
+        <div className='todo-image'>
+          <img className='logo' src={reactLogo} />
+        </div>
+      }
     </div>
   )
 }

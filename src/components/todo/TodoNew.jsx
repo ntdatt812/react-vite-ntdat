@@ -19,6 +19,11 @@ const TodoNew = ({ addNewTodo }) => {
                     handleOnChange(event.target.value)
                 }}
                 value={valueInput}
+                onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                        handleClick()
+                    }
+                }}
             />
             <button
                 style={{ cursor: "pointer" }}
