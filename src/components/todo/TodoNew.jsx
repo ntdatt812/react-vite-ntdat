@@ -1,12 +1,11 @@
 import { useState } from "react"
 
 const TodoNew = ({ addNewTodo }) => {
-    //addNewTodo("Thanh Dat")
     const [valueInput, setValueInput] = useState("")
 
     const handleClick = () => {
         console.log(">> check value input: ", valueInput)
-        setValueInput(valueInput)
+        addNewTodo(valueInput)
     }
 
     const handleOnChange = (value) => {
@@ -18,7 +17,7 @@ const TodoNew = ({ addNewTodo }) => {
             <input
                 type="text"
                 onChange={(event) => {
-                    handleOnChange(handleClick(event.target.value))
+                    handleOnChange(event.target.value)
                 }}
             />
             <button

@@ -11,7 +11,7 @@
 
 .todo-container {
     width: 500px;
-    height: 500px;
+    height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -32,7 +32,6 @@
     margin-right: 15%;
     border: 2px solid black;
     border-radius: 10%;
-    height: auto;
     padding: 2%;
 }
 

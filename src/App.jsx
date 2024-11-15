@@ -6,10 +6,12 @@ import { useState } from 'react'
 
 const App = () => {
 
-  const [todoData, setTodoData] = useState([
-    { id: 1, name: "Nguyen Thanh Dat" },
-    { id: 2, name: "Do Ngoc Anh" }
-  ]);
+  const [todoData, setTodoData] = useState([]);
+
+  function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
 
   const ntdat = "thanh dat";
   const age = 25
@@ -19,7 +21,11 @@ const App = () => {
   }
 
   const addNewTodo = (name) => {
-    alert(`call me ${name}`);
+    const newTodo = {
+      id: randomIntFromInterval(1, 1000000),
+      name
+    }
+    setTodoData([...todoData, newTodo])
   }
 
   return (
@@ -27,8 +33,6 @@ const App = () => {
       <div className="todo-title">TODO LIST</div>
       <TodoNew
         addNewTodo={addNewTodo}
-        setTodoData={setTodoData}
-        todoData={todoData}
       />
       <TodoData
         name={ntdat}
