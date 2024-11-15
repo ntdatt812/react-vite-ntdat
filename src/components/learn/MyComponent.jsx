@@ -16,7 +16,6 @@ const MyComponent = () => {
     return (
         <>
             <div style={{ borderRadius: "10px" }}>Đây là component đầu tiên! By Nguyễn Thành Đạt</div>
-            <div>{console.log("Nguyen Thanh Dat")}</div>
             <div className="child"> {JSON.stringify(ntdat)}child</div>
         </>
     );

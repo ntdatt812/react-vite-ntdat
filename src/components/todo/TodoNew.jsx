@@ -4,13 +4,11 @@ const TodoNew = ({ addNewTodo }) => {
     const [valueInput, setValueInput] = useState("")
 
     const handleClick = () => {
-        console.log(">> check value input: ", valueInput);
         addNewTodo(valueInput);
         setValueInput("");
     }
 
     const handleOnChange = (value) => {
-        console.log(">> handle onchange: ", value);
         setValueInput(value)
     }
     return (
@@ -28,7 +26,6 @@ const TodoNew = ({ addNewTodo }) => {
                     handleClick()
                 }}
             >Add</button>
-            <div>My name is {valueInput}</div>
         </div>
     );
 }
