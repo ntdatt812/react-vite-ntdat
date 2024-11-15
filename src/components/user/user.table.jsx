@@ -6,9 +6,7 @@ import { fetchAllUserAPI } from '../../services/api.service';
 const UserTable = () => {
 
     const [dataUsers, setDataUser] = useState([]);
-    useEffect(
-        () => { loadUser() }
-        , [])
+    useEffect(() => { loadUser() }, [])
 
     const columns = [
         {
