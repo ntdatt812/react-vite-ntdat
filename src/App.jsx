@@ -3,6 +3,8 @@ import TodoData from './components/todo/TodoData'
 import TodoNew from './components/todo/TodoNew'
 import reactLogo from './assets/react.svg'
 import { useState } from 'react'
+import Header from './components/layout/header'
+import Footer from './components/layout/footer'
 
 const App = () => {
 
@@ -10,14 +12,6 @@ const App = () => {
 
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-
-  const ntdat = "thanh dat";
-  const age = 25
-  const data = {
-    address: "Thanhhoa",
-    country: "Vietnam"
   }
 
   const addNewTodo = (name) => {
@@ -35,25 +29,27 @@ const App = () => {
   }
 
   return (
-    <div className="todo-container">
-      <div className="todo-title">TODO LIST</div>
-      <TodoNew
-        addNewTodo={addNewTodo}
-      />
-      {todoData.length !== 0 ?
-        <TodoData
-          name={ntdat}
-          age={age}
-          data={data}
-          todoData={todoData}
-          deleteTodo={deleteTodo}
+    <>
+      <Header />
+      <div className="todo-container">
+        <div className="todo-title">TODO LIST</div>
+        <TodoNew
+          addNewTodo={addNewTodo}
         />
-        :
-        <div className='todo-image'>
-          <img className='logo' src={reactLogo} />
-        </div>
-      }
-    </div>
+        {todoData.length !== 0 ?
+          <TodoData
+            todoData={todoData}
+            deleteTodo={deleteTodo}
+          />
+          :
+          <div className='todo-image'>
+            <img className='logo' src={reactLogo} />
+          </div>
+        }
+      </div>
+      <Footer />
+    </>
+
   )
 }
 
