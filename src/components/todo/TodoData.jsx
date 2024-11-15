@@ -1,12 +1,16 @@
 
-const TodoData = ({ name, age, data, todoData }) => {
-    console.log(">> check name: ", name, age, data);
+const TodoData = ({ todoData }) => {
+
     return (
         <div className='todo-data'>
-            <div>Learning react</div>
-            <div>Learning vite</div>
-            <div>{data.address}</div>
-            {JSON.stringify(todoData)}
+            {todoData.map((item) => {
+                return (
+                    <div className="todo-item">
+                        <div>{item.name}</div>
+                        <button>Delete</button>
+                    </div>
+                );
+            })}
         </div>
 
     );

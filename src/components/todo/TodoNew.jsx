@@ -4,12 +4,13 @@ const TodoNew = ({ addNewTodo }) => {
     const [valueInput, setValueInput] = useState("")
 
     const handleClick = () => {
-        console.log(">> check value input: ", valueInput)
-        addNewTodo(valueInput)
+        console.log(">> check value input: ", valueInput);
+        addNewTodo(valueInput);
+        setValueInput("");
     }
 
     const handleOnChange = (value) => {
-        console.log(">> handle onchange: ", value)
+        console.log(">> handle onchange: ", value);
         setValueInput(value)
     }
     return (
@@ -19,6 +20,7 @@ const TodoNew = ({ addNewTodo }) => {
                 onChange={(event) => {
                     handleOnChange(event.target.value)
                 }}
+                value={valueInput}
             />
             <button
                 style={{ cursor: "pointer" }}
