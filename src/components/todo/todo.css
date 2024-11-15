@@ -10,13 +10,7 @@
 }
 
 .todo-container {
-    width: 500px;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10%;
+    justify-content: center;
 }
 
 .todo-new {
