@@ -2,7 +2,7 @@ import { Button, Input, Modal, notification } from "antd";
 import { useState } from "react";
 import { createUserAPI } from "../../services/api.service";
 
-const UserForm = () => {
+const UserForm = ({ loadUser }) => {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -17,7 +17,9 @@ const UserForm = () => {
                 message: "CREATE USER",
                 description: "Thêm mới user thành công!"
             })
-            setIsModelOpen(false)
+            await loadUser();
+            resetDataModal();
+
         } else {
             notification.error({
                 message: "ERROR",
@@ -25,6 +27,14 @@ const UserForm = () => {
             })
         }
 
+    }
+
+    const resetDataModal = () => {
+        setFullName("")
+        setEmail("")
+        setPhone("")
+        setPassword("")
+        setIsModelOpen(false)
     }
 
     return (
