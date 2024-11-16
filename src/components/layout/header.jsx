@@ -1,7 +1,7 @@
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { BookOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 //import './header.css'
 
 const Header = () => {
@@ -9,21 +9,21 @@ const Header = () => {
         {
             label: <Link to={"/"}>Home</Link>,
             key: 'home',
-            icon: <MailOutlined />,
+            icon: <HomeOutlined />,
         },
         {
             label: <Link to={"/users"}>User</Link>,
             key: 'app',
-            icon: <AppstoreOutlined />,
+            icon: <UserOutlined />,
         },
         {
             label: <Link to={"/books"}>Book</Link>,
             key: 'book',
-            icon: <SettingOutlined />,
+            icon: <BookOutlined />,
         }
     ];
 
-    const [current, setCurrent] = useState('mail');
+    const [current, setCurrent] = useState('');
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);

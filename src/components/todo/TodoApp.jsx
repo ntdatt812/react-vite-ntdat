@@ -20,7 +20,6 @@ const TodoApp = () => {
     }
 
     const deleteTodo = (id) => {
-        console.log(">> check id: ", id)
         const result = todoData.filter((todo) => todo.id !== id)
         setTodoData(result)
     }
