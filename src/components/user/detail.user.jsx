@@ -1,7 +1,58 @@
-import { Button, Drawer } from "antd";
+import { Button, Drawer, notification } from "antd";
+import { useState } from "react";
+import { handleUploadFileAPI, updateUserAvatarAPI } from "../../services/api.service";
 
-const DetailUser = ({ isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail }) => {
-    console.log(dataDetail)
+const DetailUser = ({ isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail, loadUser }) => {
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [preview, setPreview] = useState(null)
+
+    const handleOnChangeFile = (e) => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setSelectedFile(null)
+            setPreview(null)
+            return
+        }
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file)
+            setPreview(URL.createObjectURL(file))
+        }
+    }
+
+    const handleUpdateAvatar = async () => {
+        //step 1: upload file
+        const resUpload = await handleUploadFileAPI(selectedFile, "avatar");
+        if (resUpload.data) {
+            //success
+            //step 2: upload user
+            const newAvatar = resUpload.data.fileUploaded;
+            const resUpdateAvatar = await updateUserAvatarAPI(newAvatar, dataDetail._id, dataDetail.fullName, dataDetail.email);
+            if (resUpdateAvatar.data) {
+                setIsDetailOpen(false)
+                setSelectedFile(null)
+                setPreview(null)
+                await loadUser()
+                notification.success({
+                    message: "UPDATE AVATAR",
+                    description: "Cập nhật avatar thành công!"
+                })
+            } else {
+                notification.error({
+                    message: "ERROR UPDATE AVATAR",
+                    description: JSON.stringify(resUpdateAvatar.message)
+                })
+            }
+
+        } else {
+            //failed
+            notification.error({
+                message: "ERROR",
+                description: JSON.stringify(resUpload.message)
+            })
+        }
+    }
+
+    console.log(preview)
     return (
         <Drawer
             width={"40vw"}
@@ -23,9 +74,19 @@ const DetailUser = ({ isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail }
                     <p>Phone number: {dataDetail.phone}</p>
                     <br />
                     <p>Avatar: </p>
-                    <div>
+                    <div style={{
+                        marginTop: "10px",
+                        height: "150px",
+                        width: "150px",
+                        border: "1px solid #ccc"
+                    }}>
                         <img
-                            height={"150px"} width={"150px"}
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                objectFit: "contain"
+                            }}
+
                             src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${dataDetail.avatar}`} />
                     </div>
                     <div  >
@@ -41,9 +102,36 @@ const DetailUser = ({ isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail }
                                 cursor: "pointer"
                             }}
                         >Upload avatar</label>
-                        <input type="file" hidden id="btnUpload" />
+                        <input
+                            type="file"
+                            hidden id="btnUpload"
+                            onChange={(event) => { handleOnChangeFile(event) }}
+                        />
                     </div>
+                    {preview &&
+                        <>
+                            <br />
+                            <div style={{
+                                marginTop: "10px",
+                                height: "150px",
+                                width: "150px",
+                                border: "1px solid #ccc"
+                            }}>
+                                <img
+                                    style={{
+                                        height: "100%",
+                                        width: "100%",
+                                        objectFit: "contain"
+                                    }}
 
+                                    src={preview} />
+                            </div>
+                            <br />
+                            <Button
+                                type="primary"
+                                onClick={handleUpdateAvatar}
+                            >Save</Button>
+                        </>}
                 </div>
                 :
                 <>Không có dữ liệu</>
