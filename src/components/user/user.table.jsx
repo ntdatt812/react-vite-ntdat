@@ -6,7 +6,7 @@ import UpdateUserModal from './update.user.modal';
 import DetailUser from './detail.user';
 import { deleteUserAPI } from '../../services/api.service';
 
-const UserTable = ({ dataUsers, loadUser }) => {
+const UserTable = ({ dataUsers, loadUser, current, pageSize, total, setCurrent, setPageSize }) => {
     const [isModalUpdate, setIsModalUpdate] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
 
@@ -31,7 +31,7 @@ const UserTable = ({ dataUsers, loadUser }) => {
         {
             title: "STT",
             render: (_, record, index) => {
-                return <>{index + 1}</>
+                return (<>{index + 1 + (current - 1) * pageSize}</>)
             }
         },
         {
@@ -88,12 +88,35 @@ const UserTable = ({ dataUsers, loadUser }) => {
         },
     ];
 
+    const onChange = (pagination, filters, sorter, extra) => {
+        //meu thay doi trang
+        if (pagination && pagination.current) {
+            if (+pagination.current !== +current) {
+                setCurrent(pagination.current);
+            }
+        }
+        if (pagination && pagination.pageSize) {
+            if (+pagination.pageSize !== +pageSize) {
+                setPageSize(+pagination.pageSize);
+            }
+        }
+    };
+
     return (
         <>
             <Table
                 dataSource={dataUsers}
                 columns={columns}
                 rowKey={"_id"}
+                pagination={
+                    {
+                        current: current,
+                        pageSize: pageSize,
+                        showSizeChanger: true,
+                        total: total,
+                        showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+                    }}
+                onChange={onChange}
             />
             <UpdateUserModal
                 isModalUpdate={isModalUpdate}
