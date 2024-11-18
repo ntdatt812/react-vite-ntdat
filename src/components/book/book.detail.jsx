@@ -1,10 +1,8 @@
 import { Drawer } from "antd";
 
 const BookDetail = ({ dataBookDetail, isOpenBookDetail, setIsOpenBookDetail }) => {
-    console.log(dataBookDetail)
 
     return (
-
         <Drawer
             title="Basic Drawer"
             onClose={() => setIsOpenBookDetail(false)}
@@ -14,19 +12,19 @@ const BookDetail = ({ dataBookDetail, isOpenBookDetail, setIsOpenBookDetail }) =
             {
                 dataBookDetail ?
                     <>
-                        <p> ID: {dataBookDetail.id}</p>
+                        <p> Id: {dataBookDetail._id}</p>
                         <br />
                         <p>Tiêu đề: {dataBookDetail.mainText}</p>
                         <br />
                         <p>Tác giả: {dataBookDetail.author}</p>
                         <br />
-                        <p>Thể loại: { }</p>
+                        <p>Thể loại: {dataBookDetail.category}</p>
                         <br />
                         <p>Giá tiền: {dataBookDetail.price}</p>
                         <br />
                         <p>Số lượng: {dataBookDetail.quantity}</p>
                         <br />
-                        <p>Đã bán: { }</p>
+                        <p>Đã bán: {dataBookDetail.sold}</p>
                         <br />
                         <p>Thumbnail: </p>
                         <div style={{
