@@ -21,8 +21,6 @@ const RegisterPage = () => {
                 description: JSON.stringify(res.message)
             })
         }
-
-        console.log(">check value: ", values)
     }
 
 
@@ -119,7 +117,7 @@ const RegisterPage = () => {
                 <Col md={6} xs={24}>
                     <Divider />
                     <div style={{ display: "flex", justifyContent: " center" }}>
-                        <p>Bạn đã có tài khoản?<Link to={"/login"}> Đăng ký ngay</Link></p>
+                        <p>Bạn đã có tài khoản?<Link to={"/login"}> Đăng nhập ngay</Link></p>
                     </div>
                 </Col>
             </Row>

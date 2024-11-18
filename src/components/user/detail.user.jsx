@@ -51,8 +51,6 @@ const DetailUser = ({ isDetailOpen, setIsDetailOpen, dataDetail, setDataDetail, 
             })
         }
     }
-
-    console.log(preview)
     return (
         <Drawer
             width={"40vw"}

@@ -14,7 +14,6 @@ const LoginPage = () => {
 
     const onFinish = async (values) => {
         setIsLoading(true)
-        console.log(values)
         const res = await loginAPI(values.username, values.password);
         if (res.data) {
             message.success("Đăng nhập thành công!");

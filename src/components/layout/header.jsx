@@ -1,6 +1,6 @@
-import { BookOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { AliwangwangOutlined, BookOutlined, HomeOutlined, LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { useContext, useState } from 'react';
+import { Children, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
 //import './header.css'
@@ -10,7 +10,6 @@ const Header = () => {
 
     const { user } = useContext(AuthContext);
 
-    console.log(">> check user: ", user)
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
@@ -31,7 +30,25 @@ const Header = () => {
             label: <Link to={"/books"}>Book</Link>,
             key: 'book',
             icon: <BookOutlined />,
-        }
+        },
+
+        ...(!user.id ? [{
+            label: <Link to={"/login"}>Đăng nhập</Link>,
+            key: 'login',
+            icon: <LoginOutlined />,
+        }] : [{
+            label: `Welcome ${user.fullName}`,
+            key: 'setting',
+            icon: <AliwangwangOutlined />,
+            children: [
+                {
+                    label: `Đăng xuất`,
+                    key: 'logout',
+                    icon: <LogoutOutlined />,
+                }
+            ]
+        }])
+
     ];
 
     return (

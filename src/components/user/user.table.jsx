@@ -15,7 +15,6 @@ const UserTable = ({ dataUsers, loadUser, current, pageSize, total, setCurrent, 
 
     const handleDeleteUser = async (id) => {
         const res = await deleteUserAPI(id);
-        console.log(res)
         if (res?.data) {
             message.success("Xoá user thành công!")
             await loadUser()
