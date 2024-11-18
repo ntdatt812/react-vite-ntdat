@@ -1,10 +1,13 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Popconfirm, Table } from "antd";
+import { useState } from "react";
+import BookDetail from "./book.detail";
 
 
 const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize }) => {
 
-
+    const [dataBookDetail, setDataBookDetail] = useState();
+    const [isOpenBookDetail, setIsOpenBookDetail] = useState(false);
 
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -33,8 +36,8 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
             dataIndex: '_id',
             render: (_, record) => (
                 <a href='#' onClick={() => {
-                    // setDataDetail(record);
-                    // setIsDetailOpen(true);
+                    setDataBookDetail(record);
+                    setIsOpenBookDetail(true)
                 }
                 }> {record._id}</a>
             ),
@@ -94,21 +97,28 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
 
 
     return (
-        <Table
-            dataSource={dataBook}
-            columns={columns}
-            rowKey={"_id"}
-            pagination={
-                {
-                    current: current,
-                    pageSize: pageSize,
-                    showSizeChanger: true,
-                    total: total,
-                    showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+        <>
+            <Table
+                dataSource={dataBook}
+                columns={columns}
+                rowKey={"_id"}
+                pagination={
+                    {
+                        current: current,
+                        pageSize: pageSize,
+                        showSizeChanger: true,
+                        total: total,
+                        showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+                    }
                 }
-            }
-            onChange={onChange}
-        />
+                onChange={onChange}
+            />
+            <BookDetail
+                dataBookDetail={dataBookDetail}
+                isOpenBookDetail={isOpenBookDetail}
+                setIsOpenBookDetail={setIsOpenBookDetail}
+            />
+        </>
     )
 }
 
