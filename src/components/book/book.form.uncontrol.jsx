@@ -1,10 +1,12 @@
-import { Button, Form, Input, InputNumber, Modal, Select } from "antd"
+import { Button, Form, Input, InputNumber, Modal, notification, Select } from "antd"
 import FormItem from "antd/es/form/FormItem"
 import { useState } from "react"
+import { createBookAPI, handleUploadFileAPI } from "../../services/api.service"
 
 const BookCreateUnControl = ({ loadTableBook, setIsModalCreateBook, isModalCreateBook }) => {
     const [selectedFile, setSelectedFile] = useState(null)
     const [preview, setPreview] = useState(null)
+    const [form] = Form.useForm();
 
     const handleOnChangeFile = (e) => {
         if (!e.target.files || e.target.files.length === 0) {
@@ -18,8 +20,36 @@ const BookCreateUnControl = ({ loadTableBook, setIsModalCreateBook, isModalCreat
             setPreview(URL.createObjectURL(file))
         }
     }
-    const onFinish = (values) => {
-        console.log(">check value: ", values)
+    const onFinish = async (values) => {
+        //step 1: upload file
+        const resUpload = await handleUploadFileAPI(selectedFile, "book");
+        if (resUpload.data) {
+            //success
+            //step 2: upload user
+            const thumbnail = resUpload.data.fileUploaded;
+            const res = await createBookAPI(thumbnail, values.mainText, values.author, values.price, values.quantity, values.category);
+            if (res.data) {
+                form.resetFields();
+                setIsModalCreateBook(false);
+                setSelectedFile(null)
+                await loadTableBook()
+                notification.success({
+                    message: "CREATE BOOK",
+                    description: "Thêm sách mới thành công!"
+                })
+            } else {
+                notification.error({
+                    message: "Ảnh thumbnail không hợp lệ!",
+                    description: JSON.stringify(res.message)
+                })
+            }
+        } else {
+            //failed
+            notification.error({
+                message: "Ảnh thumbnail",
+                description: "Bạn cần upload ảnh thumbnail!"
+            })
+        }
     }
 
     return (
@@ -39,24 +69,13 @@ const BookCreateUnControl = ({ loadTableBook, setIsModalCreateBook, isModalCreat
                     title="Create a book"
                     open={isModalCreateBook}
                     onCancel={() => setIsModalCreateBook(false)}
+                    onOk={form.submit}
                 >
                     <Form
+                        form={form}
                         layout="vertical"
                         name="basic"
-                        labelCol={{
-                            span: 8,
-                        }}
-                        wrapperCol={{
-                            span: 16,
-                        }}
-                        style={{
-                            maxWidth: 600,
-                        }}
-                        initialValues={{
-                            remember: true,
-                        }}
                         onFinish={onFinish}
-                        autoComplete="off"
                     >
                         <Form.Item
                             label="Tiêu đề"
