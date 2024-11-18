@@ -1,10 +1,21 @@
 import { BookOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/auth.context';
 //import './header.css'
 
 const Header = () => {
+    const [current, setCurrent] = useState('');
+
+    const { user } = useContext(AuthContext);
+
+    console.log(">> check user: ", user)
+    const onClick = (e) => {
+        console.log('click ', e);
+        setCurrent(e.key);
+    };
+
     const items = [
         {
             label: <Link to={"/"}>Home</Link>,
@@ -22,13 +33,6 @@ const Header = () => {
             icon: <BookOutlined />,
         }
     ];
-
-    const [current, setCurrent] = useState('');
-    const onClick = (e) => {
-        console.log('click ', e);
-        setCurrent(e.key);
-    };
-
 
     return (
         <Menu
