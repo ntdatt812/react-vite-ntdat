@@ -1,11 +1,27 @@
-import { Form, Input, InputNumber, Modal, Select } from "antd";
-import { useState } from "react";
+import { Form, Input, InputNumber, Modal, notification, Select } from "antd";
+import { useEffect, useState } from "react";
+import { handleUploadFileAPI, updateBookAPI } from "../../services/api.service";
 
 
-const BookUpdateUnControl = () => {
+const BookUpdateUnControl = ({ dataBookUpdate, isModalBookUpdate, setIsModalBookUpdate, loadTableBook }) => {
     const [selectedFile, setSelectedFile] = useState(null)
     const [preview, setPreview] = useState(null)
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (dataBookUpdate && dataBookUpdate._id) {
+            form.setFieldsValue({
+                id: dataBookUpdate._id,
+                mainText: dataBookUpdate.mainText,
+                author: dataBookUpdate.author,
+                price: dataBookUpdate.price,
+                quantity: dataBookUpdate.quantity,
+                category: dataBookUpdate.category,
+
+            })
+            setPreview(`${import.meta.env.VITE_BACKEND_URL}/images/book/${dataBookUpdate.thumbnail}`)
+        }
+    }, [dataBookUpdate])
 
     const handleOnChangeFile = (e) => {
         if (!e.target.files || e.target.files.length === 0) {
@@ -19,17 +35,57 @@ const BookUpdateUnControl = () => {
             setPreview(URL.createObjectURL(file))
         }
     }
-
-    const onFinish = () => {
+    const onFinish = async (value) => {
+        let anhThumbnail = "";
+        if (!preview && !selectedFile) {
+            notification.error({
+                message: "Ảnh thumbnail",
+                description: "Bạn cần chọn ảnh thubnail"
+            })
+            return
+        }
+        if (preview && !selectedFile) {
+            anhThumbnail = dataBookUpdate.thumbnail;
+        }
+        if (preview && selectedFile) {
+            const resUpload = await handleUploadFileAPI(selectedFile, "book");
+            if (resUpload.data) {
+                anhThumbnail = resUpload.data.fileUploaded;
+            } else {
+                notification.error({
+                    message: "ERROR",
+                    description: JSON.stringify(resUpload.message)
+                })
+            }
+        }
+        await updateBook(value, anhThumbnail);
 
     }
 
+    const updateBook = async (value, anhThumbnail) => {
+        const res = await updateBookAPI(value.id, anhThumbnail, value.mainText, value.author, value.price, value.quantity, value.category);
+        if (res.data) {
+            notification.success({
+                message: "UPDATE BOOK",
+                description: "Cập nhật book thành công!"
+            })
+            setIsModalBookUpdate(false)
+            setSelectedFile(null)
+            setPreview(null)
+            await loadTableBook()
+        } else {
+            notification.error({
+                message: "UPDATE BOOK",
+                description: JSON.stringify(res.message)
+            })
+        }
+    }
     return (
         <Modal
             title="Create a book"
-        // open={isModalCreateBook}
-        // onCancel={() => setIsModalCreateBook(false)}
-        // onOk={form.submit}
+            open={isModalBookUpdate}
+            onCancel={() => setIsModalBookUpdate(false)}
+            onOk={form.submit}
         >
             <Form
                 form={form}
@@ -37,6 +93,13 @@ const BookUpdateUnControl = () => {
                 name="basic"
                 onFinish={onFinish}
             >
+                <Form.Item
+                    label="Id"
+                    name="id"
+                >
+                    <Input disabled />
+                </Form.Item>
+
                 <Form.Item
                     label="Tiêu đề"
                     name="mainText"
@@ -102,6 +165,7 @@ const BookUpdateUnControl = () => {
                         showSearch
                         placeholder="Chọn thể loại"
                         optionFilterProp="label"
+                        name="category"
                         filterSort={(optionA, optionB) =>
                             (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                         }

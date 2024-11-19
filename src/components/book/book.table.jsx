@@ -1,8 +1,10 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Popconfirm, Table } from "antd";
+import { message, notification, Popconfirm, Table } from "antd";
 import { useState } from "react";
 import BookDetail from "./book.detail";
 import BookUpdate from "./book.update";
+import BookUpdateUnControl from "./book.update.uncontrol";
+import { deleteBookAPI } from "../../services/api.service";
 
 
 const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize, loadTableBook }) => {
@@ -12,6 +14,26 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
 
     const [dataBookUpdate, setDataBookUpdate] = useState();
     const [isModalBookUpdate, setIsModalBookUpdate] = useState(false)
+
+    const handleDeleteBook = async (record) => {
+        const res = deleteBookAPI(record._id);
+        if (res) {
+            notification.success({
+                message: "SUCCESS",
+                description: (
+                    <span>
+                        Đã xoá <strong>{record.mainText}</strong> thành công!
+                    </span>
+                )
+            })
+            await loadTableBook();
+        } else {
+            notification.error({
+                message: "ERROR",
+                description: JSON.stringify(res.message)
+            })
+        }
+    }
 
     const onChange = (pagination, filters, sorter, extra) => {
         //meu thay doi trang
@@ -84,9 +106,13 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
                     <Popconfirm
                         title="DELETE BOOK"
                         placement="left"
-                        description={`Bạn có chắc chắn muốn xoá ${record.mainText} không?`}
+                        description={(
+                            <span>
+                                Bạn có chắc chắn muốn xoá <strong>{record.mainText}</strong> không?
+                            </span>
+                        )}
                         onConfirm={() => {
-                            // handleDeleteUser(record._id)
+                            handleDeleteBook(record)
                         }}
                         okText="Có"
                         cancelText="Huỷ"
@@ -97,7 +123,6 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
             )
         }
     ];
-
 
     return (
         <>
@@ -121,7 +146,13 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
                 isOpenBookDetail={isOpenBookDetail}
                 setIsOpenBookDetail={setIsOpenBookDetail}
             />
-            <BookUpdate
+            {/* <BookUpdate
+                dataBookUpdate={dataBookUpdate}
+                isModalBookUpdate={isModalBookUpdate}
+                setIsModalBookUpdate={setIsModalBookUpdate}
+                loadTableBook={loadTableBook}
+            /> */}
+            <BookUpdateUnControl
                 dataBookUpdate={dataBookUpdate}
                 isModalBookUpdate={isModalBookUpdate}
                 setIsModalBookUpdate={setIsModalBookUpdate}
