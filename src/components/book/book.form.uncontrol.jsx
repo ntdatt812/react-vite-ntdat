@@ -32,6 +32,7 @@ const BookCreateUnControl = ({ loadTableBook, setIsModalCreateBook, isModalCreat
                 form.resetFields();
                 setIsModalCreateBook(false);
                 setSelectedFile(null)
+                setPreview(null)
                 await loadTableBook()
                 notification.success({
                     message: "CREATE BOOK",

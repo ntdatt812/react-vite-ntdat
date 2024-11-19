@@ -2,13 +2,16 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Popconfirm, Table } from "antd";
 import { useState } from "react";
 import BookDetail from "./book.detail";
+import BookUpdate from "./book.update";
 
 
-const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize }) => {
+const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize, loadTableBook }) => {
 
     const [dataBookDetail, setDataBookDetail] = useState();
     const [isOpenBookDetail, setIsOpenBookDetail] = useState(false);
 
+    const [dataBookUpdate, setDataBookUpdate] = useState();
+    const [isModalBookUpdate, setIsModalBookUpdate] = useState(false)
 
     const onChange = (pagination, filters, sorter, extra) => {
         //meu thay doi trang
@@ -71,8 +74,8 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
                 <div style={{ display: "flex", gap: "20px" }}>
                     <EditOutlined
                         onClick={() => {
-                            // setDataUpdate(record)
-                            // setIsModalUpdate(true);
+                            setDataBookUpdate(record)
+                            setIsModalBookUpdate(true);
                         }}
                         style={{
                             cursor: "pointer",
@@ -117,6 +120,12 @@ const BookTable = ({ dataBook, current, pageSize, total, setCurrent, setPageSize
                 dataBookDetail={dataBookDetail}
                 isOpenBookDetail={isOpenBookDetail}
                 setIsOpenBookDetail={setIsOpenBookDetail}
+            />
+            <BookUpdate
+                dataBookUpdate={dataBookUpdate}
+                isModalBookUpdate={isModalBookUpdate}
+                setIsModalBookUpdate={setIsModalBookUpdate}
+                loadTableBook={loadTableBook}
             />
         </>
     )
